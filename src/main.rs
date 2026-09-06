@@ -2,10 +2,6 @@ use axum::{http::StatusCode, response::IntoResponse, routing::get, Json, Router}
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-mod auth;
-mod error;
-mod models;
-
 async fn health() -> impl IntoResponse {
     (
         StatusCode::OK,
@@ -43,21 +39,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use axum::{body::Body, http::Request};
-    use tower::ServiceExt;
 
     #[tokio::test]
-    async fn health_endpoint_returns_ok() {
-        let response = app()
-            .oneshot(
-                Request::builder()
-                    .uri("/api/v1/health")
-                    .body(Body::empty())
-                    .expect("valid request"),
-            )
-            .await
-            .expect("router response");
-
+    async fn health_handler_returns_ok() {
+        let response = health().await.into_response();
         assert_eq!(response.status(), StatusCode::OK);
     }
 }
