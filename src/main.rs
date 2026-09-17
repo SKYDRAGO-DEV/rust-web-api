@@ -1,4 +1,7 @@
-use std::{io, net::{IpAddr, SocketAddr}};
+use std::{
+    io,
+    net::{IpAddr, SocketAddr},
+};
 
 use axum::{http::StatusCode, response::IntoResponse, routing::get, Json, Router};
 use tower_http::trace::TraceLayer;
